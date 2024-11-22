@@ -1,71 +1,47 @@
 import 'package:flutter/material.dart';
 
+import 'package:http/http.dart' as http;
+
 void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Movie Home'),
-    );
-  }
+  State<StatefulWidget> createState() => _MainAppState();
+
+}
+void _getListAPI() {
+  http
+      .get(Uri.https('api.themoviedb.org', '/4/list/1'),
+        headers: {
+        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5OWZkZjM3NGM1NzY4NmQ4MDlhYmFhOTAyNDA1MjRlOCIsIm5iZiI6MTczMjE1MzcyOC45MjkwNzA3LCJzdWIiOiI2NzNiYzBlODliMDcyYWJhOGM4MjYyNTUiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.E65xtLV7a_gFuJsStxOtLdcoGJtFmI0BiVgU0vv48K8',
+        'content-type': 'application/json;charset=utf-8'
+      }
+  )
+      .then((value) => print(value.body));
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+// This widget is the root of your application.
 
-  final String title;
-
+class _MainAppState extends State<MyApp> {
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
+  void initState() {
+    super.initState();
+    _getListAPI();
   }
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+    return const MaterialApp(
+      home: Scaffold(
+        backgroundColor: Colors.white,
+        body: Center(
+          child: Text("Primeiro APP"),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
+
 }
